@@ -4,7 +4,7 @@ import pygame
 class Game:
     def __init__(self, w=800, h=400, c=(80, 22, 100), fps=50):
         pygame.init()
-        self.count = 0
+        # self.count = 0
         self.width = w
         self.heidth = h
         self.color = c
@@ -14,48 +14,71 @@ class Game:
         self.game_and = False
         self.x_rect = self.width // 2
         self.y_rect = self.heidth // 2
+
         self.x_rect2 = 340
         self.y_rect2 = 200
+
+        self.x_rect3 = 40
+        self.y_rect3 = 100
+
         self.width_rect = 20
         self.heidth_cert = 10
         self.color2 = (255, 0, 0)
-        self.rect= pygame.Rect
+        self.rect = pygame.Rect
+
         self.width_rect2 = 20
         self.heidth_cert2 = 10
         self.color3 = (0, 0, 255)
         self.rect2 = pygame.Rect
+
+        self.width_rect3 = 10
+        self.heidth_cert3 = 20
+        self.color4 = (0, 255, 0)
+        self.rect3 = pygame.Rect
+
         self.speed = 10
+
         self.speed2 = 10
+
+        self.speed3 = 10
+
         self.horizontal_move_flag = self.vertical_move_flag = 0
         self.horizontal_move_flag2 = self.vertical_move_flag2 = 0
+        self.horizontal_move_flag3 = 0
 
     def func_rect(self):
         self.rect = pygame.draw.rect(self.screen, self.color2,
-                                      (self.x_rect, self.y_rect, self.width_rect2, self.heidth_cert2))
+                                     (self.x_rect, self.y_rect, self.width_rect2, self.heidth_cert2))
 
     def func_rect2(self):
         self.rect2 = pygame.draw.rect(self.screen, self.color3,
                                       (self.x_rect2, self.y_rect2, self.width_rect2, self.heidth_cert2))
+
+    def func_rect3(self):
+        self.rect3 = pygame.draw.rect(self.screen, self.color4,
+                                      (self.x_rect3, self.y_rect3, self.heidth_cert3, self.width_rect3))
 
     def draw(self):
 
         self.screen.fill(self.color)
         self.func_rect()
         self.func_rect2()
+        self.func_rect3()
         pygame.display.flip()
 
     def zikl(self):
         while not self.game_and:
-
             self.clock.tick(self.fps)
             self.check_event()
             self.move()
             self.move2()
+            self.move3()
+            self.logek3(self.width, self.heidth)
             self.logek2(self.width, self.heidth)
             self.logek(self.width, self.heidth)
             self.draw()
             self.collision(self.rect, self.rect2)
-
+            self.collision2(self.rect, self.rect2, self.rect3)
 
     def __del__(self):
         pygame.quit()
@@ -137,11 +160,28 @@ class Game:
 
     def collision(self, rect, rect2):
         if rect.colliderect(rect2):
-            #self.game_and = True
-            self.count += 1
-        if self.count == 3:
             self.game_and = True
 
+    def move3(self):
+        self.x_rect3 += self.speed3 * self.horizontal_move_flag3
+
+    def logek3(self, width, heidth, width_rect3=20, heidth_rect3=10):
+        if self.x_rect3 <= width:
+            self.horizontal_move_flag3 = 1
+        elif self.x_rect3 > width - width_rect3:
+            self.horizontal_move_flag3 = -1
+        # if self.x_rect3 < width:
+        #     self.horizontal_move_flag3 = 1
+        # elif self.x_rect3 > width - width_rect3:
+        #     self.horizontal_move_flag3 = -1
+        # if self.y_rect3 < 0:
+        #     self.y_rect3 = 0
+        # elif self.y_rect3 > heidth - heidth_rect3:
+        #     self.y_rect3 = heidth - heidth_rect3
+
+    def collision2(self, rect, rect2, rect3):
+        if rect2.colliderect(rect3) or rect.colliderect(rect3):
+            self.game_and = True
 
 
 p = Game()
